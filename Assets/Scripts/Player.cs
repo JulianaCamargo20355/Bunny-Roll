@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         {
             IncrementarCenouras();
             contadorCenouras.text = "= " + contCenoura;
-            print("Cenouras: " + contCenoura);
+            //print("Cenouras: " + contCenoura);
             Destroy(trigger.gameObject);
         }
     }
