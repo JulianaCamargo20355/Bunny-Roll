@@ -70,6 +70,12 @@ public class Player : MonoBehaviour
     private void IncrementarCenouras()
     {
         contCenoura++;
+        AtualizarContadorCenouras();
+
+        if (contCenoura >= 20)
+        {
+            VerificarVitoria();
+        }
     }
 
     private void AtualizarContadorCenouras()
@@ -80,7 +86,7 @@ public class Player : MonoBehaviour
     private void AtualizarTime()
     {
         int segundosRestantes = Mathf.Max(0, Mathf.FloorToInt(tempoRest)); 
-        tempo.text = "Tempo: " + segundosRestantes.ToString();
+        tempo.text = "Segundos: " + segundosRestantes.ToString();
     }
     private void VerificarDerrota()
     {
@@ -94,6 +100,12 @@ public class Player : MonoBehaviour
         {
             SceneManager.LoadScene("Win"); 
         }
+    }
+
+    private void VerificarVitoria()
+    {
+        jogando = false; 
+        SceneManager.LoadScene("Win"); 
     }
 }
 
