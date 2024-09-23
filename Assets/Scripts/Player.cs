@@ -1,20 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     public float vel;
-    public int contCenoura;
-    
+    public int contCenoura = 0;
+    public TMPro.TextMeshProUGUI contadorCenouras;
+    public TMPro.TextMeshProUGUI tempo;
+    float tempoRest = 30f;
+    bool jogando = true;
     void Start()
     {
-
+        AtualizarContadorCenouras();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (jogando) 
+        {
+            tempoRest -= Time.deltaTime; 
+            AtualizarTime(); 
+
+            if (tempoRest <= 0f) 
+            {
+                VerificarDerrota();
+            }
+        }
+
         float moveX = Input.GetAxis("Horizontal") * vel * Time.deltaTime;
         float moveZ = Input.GetAxis("Vertical") * vel * Time.deltaTime;
 
@@ -42,9 +60,39 @@ public class Player : MonoBehaviour
     {
         if (trigger.gameObject.CompareTag("Cenoura"))
         {
-            contCenoura++;
+            IncrementarCenouras();
+            contadorCenouras.text = "= " + contCenoura;
             print("Cenouras: " + contCenoura);
             Destroy(trigger.gameObject);
+        }
+    }
+
+    private void IncrementarCenouras()
+    {
+        contCenoura++;
+    }
+
+    private void AtualizarContadorCenouras()
+    {
+        contadorCenouras.text = "= " + contCenoura;
+    }
+
+    private void AtualizarTime()
+    {
+        int segundosRestantes = Mathf.Max(0, Mathf.FloorToInt(tempoRest)); 
+        tempo.text = "Tempo: " + segundosRestantes.ToString();
+    }
+    private void VerificarDerrota()
+    {
+        jogando = false; 
+
+        if (contCenoura < 15) 
+        {
+            SceneManager.LoadScene("Lose"); 
+        }
+        else
+        {
+            SceneManager.LoadScene("Win"); 
         }
     }
 }
